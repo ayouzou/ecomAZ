@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form"
 import useAuth from "../../hooks/useAuth"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import toast from 'react-hot-toast';
 import Button from "../../components/ui/formElement/Button";
 import Input from "../../components/ui/formElement/Input";
@@ -72,6 +72,12 @@ export default function Register() {
     }
   }
   console.log(auth)
+  useEffect(()=>{
+    if(auth.isAuthenticated){
+      window.location.href ='/'
+    }
+  },[auth])
+
   return (
     <div>
       <div className="sm:ml-28  h-[85vh] mt-16 shadow-xl bg-white ">

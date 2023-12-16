@@ -1,9 +1,11 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../../components/ui/formElement/Button"
 import Input from "../../components/ui/formElement/Input"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { storeCookie } from "../../lib/auth";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 type Inputs ={
   email:string,
@@ -15,7 +17,8 @@ interface ApiResponse {
   token?: string;
 }
 export default function Login (){
-
+  const navigate = useNavigate()
+  const {auth } = useAuth()
   const {register ,handleSubmit,formState:{errors}}= useForm<Inputs>()
   const [isLoading, setIsLoading] = useState(false)
   const onSubmit:SubmitHandler<Inputs> =async (data:Inputs) =>{
@@ -49,6 +52,12 @@ export default function Login (){
       console.log(err)
     }
   }
+
+  useEffect(()=>{
+    if(auth.isAuthenticated){
+     navigate('/')
+    }
+  },[auth])
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
