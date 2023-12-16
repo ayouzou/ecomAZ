@@ -1,6 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import { Session, SessionProviderProps } from "../types/auth";
-import { decodeJWT, getCookie } from "../utils/auth";
+import { decodeJWT, getCookie } from "../lib/auth";
 import isEqual from 'lodash/isEqual';
 
 export const SessionContext = createContext<Session>({

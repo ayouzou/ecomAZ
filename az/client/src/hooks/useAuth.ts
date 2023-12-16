@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { SessionContext } from "../context/auth";
-import { deleteCookie } from "../utils/auth";
+import { deleteCookie } from "../lib/auth";
 
 export default function useAuth() {
   const authContext = useContext(SessionContext);

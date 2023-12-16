@@ -1,6 +1,5 @@
-import * as jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { User } from "../types/auth";
-type JwtToken = string;
 
 // If you want to specify the structure of the JWT payload, you can define an interface:
 interface JwtPayload {
@@ -11,16 +10,11 @@ interface JwtPayload {
 }
 
 // Combining the token and payload types:
-type Jwt = {
-  token: JwtToken;
-  payload: JwtPayload;
-};
 
-export const decodeJWT = (cookieName?: string): User | null => {
-  // console.log("coookiename", cookieName);
-  const token = cookieName ? getCookie(cookieName) : getCookie("token");
+export const decodeJWT = (): User | null => {
+  const token = getCookie("token");
   try {
-    return jwt_decode(token);
+    return jwtDecode(token);
   } catch (e) {
     return null;
   }
@@ -28,7 +22,7 @@ export const decodeJWT = (cookieName?: string): User | null => {
 
 export function storeCookie(name: string, value: string) {
   // let's extract the days from the token value
-  const decodedToken: JwtPayload = jwt_decode(value);
+  const decodedToken: JwtPayload = jwtDecode(value);
   let days = decodedToken.exp - decodedToken.iat;
   days = Math.floor(days / 60 / 60 / 24);
   let expires = "";
@@ -54,6 +48,22 @@ export function getCookie(cname: string) {
   }
   return "";
 }
-export function deleteCookie(name: string) {
-  document.cookie = name + "=; Max-Age=-99999999;";
+export function deleteCookie(
+  name: string,
+  path: string = "/",
+  domain: string = ""
+) {
+  if (
+    document.cookie
+      .split(";")
+      .some((item) => item.trim().startsWith(name + "="))
+  ) {
+    document.cookie =
+      name +
+      "=; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Path=" +
+      path +
+      "; Domain=" +
+      domain +
+      ";";
+  }
 }
